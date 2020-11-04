@@ -490,12 +490,22 @@ std::string ofxSimpleHttp::getFileSystemSafeString( const std::string &input )
 
 std::string ofxSimpleHttp::extractFileFromUrl( const std::string &url )
 {
-    int         found = url.find_last_of( "/" );
+    int found = url.find_last_of( "/" );
+
+    //! Adding logic for uber specific urls
     std::string file = url.substr( found + 1 );
+
+    if( file.find( "?" ) ) {
+        auto sub_strings = ofSplitString( file, "?" ); 
+        file = sub_strings[0]; 
+    }
+
     file = getFileSystemSafeString( file );
     if( file.length() == 0 ) {
         file = "unnamed.file";
     }
+
+
     return file;
 }
 
